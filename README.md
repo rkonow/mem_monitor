@@ -55,13 +55,13 @@ The output produced by the class consist of a CSV file:
 
 time_ms|pid|VmPeakVmRSS|event
 -------|---|-----------|-----
-1|12382|159952896|64|116"vector init"
-51|12382|15995289668|2142|"vector init"
-101|12382|15995289848|445|"vector init"
-151|12382|16044032744|676|"sort vector"
-201|12382|19127910976|845|"sort vector"
-251|12382|201809920272|17|"sort vector"
-301|12382|220192764464|11|"sort vector"
+1|12382|15995289664116|"vector init"
+51|12382|159952896682142|"vector init"
+101|12382|15995289848445|"vector init"
+151|12382|16044032744676|"sort vector"
+201|12382|19127910976845|"sort vector"
+251|12382|20180992027217|"sort vector"
+301|12382|22019276446411|"sort vector"
 
 where `time_ms` corresponds to the number of milliseconds since the creation of
 the object.
@@ -93,10 +93,6 @@ plot <- plot + geom_vline(data=dup,aes(xintercept = time_ms,linetype=event),show
 plot <- plot + theme_grey() + ggtitle("Memory Usage over Time")
 ggsave(plot,file="memory_usage.png")
 ```
-
-which produces a graph such as:
-
-<img width="600" src="memory_usage.png?raw=true" />
 
 ## License
 
