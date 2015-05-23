@@ -1,20 +1,16 @@
 Memory Monitor
 ================
 
-`mem_monitor` is self contained header file containing a C++11 memory monitor.
+`mem_monitor` is self contained header file containing a C++11 memory monitor. This is a modified version obtained from 
+https://github.com/mpetri/mem_monitor, that uses a multi-platform procedure for obtaining the current memory usage.
 
-to monitor memory usage, the monitor objects creates a thread which periodically
-reads `/proc/self/status` and records values for:
+This version, however, has a limited amount of information that can be fetched:
 
    Metric |Description
 ----------------------|----------------------------
          pid | The process ID
          VmPeak | Peak virtual memory size
-         VmSize | Virtual memory size
-         VmHWM | Peak resident set size ("high water mark")
          VmRSS | Resident set size
-         VmData | Size of data segments
-         VmPTE | Page table entries size
 
 ## Usage
 
@@ -38,8 +34,7 @@ int main(int argc, char const *argv[])
 the information are periodically written to the output file and flushed once
 the object is destroyed.
 
-Additionally, the granularity with which the monitoring thread polls the
-`/proc/self/status` file can be passed to the constructor:
+Additionally, the granularity with which the monitoring thread polls
 
 ```C++
 mem_monitor mm("mem-mon-out.csv",std::chrono::milliseconds(5));
@@ -58,15 +53,15 @@ monitor can also be used to track only certain aspects of the executing program.
 
 The output produced by the class consist of a CSV file:
 
-time_ms|pid|VmPeak|VmSize|VmHWM|VmRSS|VmData|VmPTE|event
--------|---|------|------|-----|-----|------|-----|-----
-1|12382|159952896|92844032|1163264|1163264|75800576|57344|"vector init"
-51|12382|159952896|114884608|22253568|21483520|97841152|110592|"vector init"
-101|12382|159952896|139624448|44494848|44494848|122580992|151552|"vector init"
-151|12382|160440320|160440320|67743744|67743744|143396864|196608|"sort vector"
-201|12382|191279104|184373248|91262976|84426752|167329792|237568|"sort vector"
-251|12382|201809920|201809920|103350272|103350272|184766464|270336|"sort vector"
-301|12382|220192768|220192768|122814464|122814464|203149312|311296|"sort vector"
+time_ms|pid|VmPeakVmRSS|event
+-------|---|-----------|-----
+1|12382|159952896|64|116"vector init"
+51|12382|15995289668|2142|"vector init"
+101|12382|15995289848|445|"vector init"
+151|12382|16044032744|676|"sort vector"
+201|12382|19127910976|845|"sort vector"
+251|12382|201809920272|17|"sort vector"
+301|12382|220192764464|11|"sort vector"
 
 where `time_ms` corresponds to the number of milliseconds since the creation of
 the object.
